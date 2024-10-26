@@ -74,7 +74,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/EsmaeelNabil/hto
+            ghcr.io/EsmaeelNabil/h2o
           tags: |
             type=semver,pattern={{version}}
             type=schedule
@@ -90,8 +90,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/EsmaeelNabil/hto:buildcache
-          cache-to: type=registry,ref=ghcr.io/EsmaeelNabil/hto:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/EsmaeelNabil/h2o:buildcache
+          cache-to: type=registry,ref=ghcr.io/EsmaeelNabil/h2o:buildcache,mode=max
 
       - uses: taiki-e/create-gh-release-action@v1
         with:
