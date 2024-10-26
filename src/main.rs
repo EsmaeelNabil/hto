@@ -3,7 +3,6 @@ mod config;
 mod cli;
 
 use cli::get_query;
-use config::get_config;
 use clap::Parser;
 use cli::H2oArgs;
 use std::env;
@@ -24,7 +23,7 @@ async fn main() {
         println!("Config: {:?}", args.config);
     }
 
-    let config = get_config(&args);
+    let config = config::get_config(&args);
 
     // application configuration
     let app = config.apps.get(args_app).unwrap();
