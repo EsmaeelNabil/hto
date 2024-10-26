@@ -1,8 +1,9 @@
 use clap::Parser;
-use std::io::Read;
 use std::io;
+use std::io::Read;
 
-pub const DEFAULT_QUERY: &str = "reply with this and nothing more: please provide a --query 'your query'";
+pub const DEFAULT_QUERY: &str =
+    "reply with this and nothing more: please provide a --query 'your query'";
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -39,6 +40,8 @@ pub fn get_query(args: &H2oArgs) -> String {
 
 pub fn read_from_stdin() -> String {
     let mut buffer = String::new();
-    io::stdin().read_to_string(&mut buffer).expect("Failed to read from stdin");
+    io::stdin()
+        .read_to_string(&mut buffer)
+        .expect("Failed to read from stdin");
     buffer
 }

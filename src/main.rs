@@ -1,9 +1,9 @@
-mod openapi;
-mod config;
 mod cli;
+mod config;
+mod openapi;
 
-use cli::get_query;
 use clap::Parser;
+use cli::get_query;
 use cli::H2oArgs;
 use std::env;
 
@@ -37,7 +37,9 @@ async fn main() {
         response_mode,
         api_key.as_str(),
         args.debug,
-    ).await {
+    )
+    .await
+    {
         Ok(response) => {
             if let Some(actual_string) = response.as_str() {
                 println!("{}", actual_string);
@@ -49,4 +51,3 @@ async fn main() {
         Err(err) => eprintln!("Something wrong happened!: {}", err),
     }
 }
-

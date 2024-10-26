@@ -32,15 +32,11 @@ pub struct H2oConfig {
 impl Default for H2oConfig {
     fn default() -> Self {
         let mut apps = HashMap::new();
-        apps.insert(
-            "one_shot".to_string(),
-            LLMApp::default(),
-        );
+        apps.insert("one_shot".to_string(), LLMApp::default());
 
         H2oConfig { apps }
     }
 }
-
 
 /**
 * Read the content of a file

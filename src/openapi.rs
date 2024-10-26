@@ -1,10 +1,9 @@
+use indicatif::{ProgressBar, ProgressStyle};
+use log::error;
 use reqwest::Client;
 use serde_json::{json, Value};
 use std::error::Error;
 use std::time::Duration;
-use indicatif::{ProgressBar, ProgressStyle};
-use log::{error};
-
 
 pub async fn get_api_response(
     prompt: &str,
@@ -27,19 +26,22 @@ pub async fn get_api_response(
     let pb = ProgressBar::new_spinner();
     pb.set_message("Thinking".to_string());
     pb.enable_steady_tick(Duration::from_millis(120));
-    pb.set_style(ProgressStyle::default_spinner().template("{spinner:.green} {msg}").unwrap());
-
+    pb.set_style(
+        ProgressStyle::default_spinner()
+            .template("{spinner:.green} {msg}")
+            .unwrap(),
+    );
 
     let response = client
         .post("https://api.openai.com/v1/chat/completions")
         .header("Authorization", format!("Bearer {}", api_key))
         .json(&json!({
-        "model": model,
-        "messages": [
-            {"role": "system", "content": system_message},
-            {"role": "user", "content": prompt},
-        ]
-    }))
+            "model": model,
+            "messages": [
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": prompt},
+            ]
+        }))
         .send()
         .await?;
 
