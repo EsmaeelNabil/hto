@@ -8,23 +8,23 @@ pub const DEFAULT_QUERY: &str =
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 pub struct H2oArgs {
-    /// Name of the person to greet
+    /// Query to send to the model
     #[arg(index = 1, default_value = DEFAULT_QUERY)]
     pub query: String,
 
-    /// Name of the person to greet
+    /// App to use from the config file at ~/.config/hto/config.yaml
     #[arg(short, long, default_value = "one_shot")]
     pub app: String,
 
-    /// Name of the person to greet
+    /// OpenAI Model to use, default is gpt-4o-mini
     #[arg(short, long, default_value = "gpt-4o-mini")]
     pub model: String,
 
-    /// Name of the person to greet
-    #[arg(short, long, default_value = ".config/h2o/config.yaml")]
+    /// Config file to use, default is ~/.config/hto/config.yaml
+    #[arg(short, long, default_value = ".config/hto/config.yaml")]
     pub config: String,
 
-    /// Enable debug mode
+    /// Enable debug mode for more verbose output
     #[arg(short = 'd', long, action = clap::ArgAction::SetTrue)]
     pub debug: bool,
 }

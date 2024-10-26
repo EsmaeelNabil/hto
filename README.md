@@ -24,3 +24,9 @@ cargo install hto
 ```
 
 - The application will use this file on startup. If the file does not exist, default settings will be applied.
+
+## For usage run
+
+```bash
+hto --help
+```
