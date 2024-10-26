@@ -1,41 +1,99 @@
-name: release
-
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
-env:
-  CARGO_TERM_COLOR: always
+name: test & tag
 
 jobs:
-   release:
-    name: release ${{ matrix.target }}
+  lint:
+    name: linting (rustfmt + clippy)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        include:
-          - target: x86_64-pc-windows-gnu
-            archive: zip
-          - target: x86_64-unknown-linux-musl
-            archive: tar.gz tar.xz tar.zst
-          - target: x86_64-apple-darwin
-            archive: zip
     steps:
-      - uses: actions/checkout@main
-      - name: Compile and release
-        uses: rust-build/rust-build.action@v1.4.5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: install stable toolchain
+        uses: dtolnay/rust-toolchain@master
         with:
-          RUSTTARGET: ${{ matrix.target }}
-          ARCHIVE_TYPES: ${{ matrix.archive }}
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+          toolchain: stable
+          components: rustfmt,clippy
+
+      - name: run rustfmt
+        run: cargo fmt --all -- --check
+
+      - name: run clippy
+        run: cargo clippy
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: install stable toolchain
+        uses: dtolnay/rust-toolchain@master
         with:
-          name: Binary
-          path: |
-            ${{ steps.compile.outputs.BUILT_ARCHIVE }}
-            ${{ steps.compile.outputs.BUILT_CHECKSUM }}
+          toolchain: stable
+
+      - name: run cargo test
+        run: cargo test --bins
+
+  publish:
+    needs: [ lint, test ]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    name: tag version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: fetch crate version
+        id: crate-version
+        uses: colathro/crate-version@1.0.0
+        with:
+          file: "./Cargo.toml"
+
+      - name: tag with crate version
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: "v"
+          custom_tag: ${{ steps.crate-version.outputs.version }}
+
+      - name: docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/EsmaeelNabil/hto
+          tags: |
+            type=semver,pattern={{version}}
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
+            type=raw,prefix=v,value=${{ steps.crate-version.outputs.version }}
+
+      - name: build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=ghcr.io/EsmaeelNabil/hto:buildcache
+          cache-to: type=registry,ref=ghcr.io/EsmaeelNabil/hto:buildcache,mode=max
+
+      - uses: taiki-e/create-gh-release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: "refs/tags/v${{ steps.crate-version.outputs.version }}"

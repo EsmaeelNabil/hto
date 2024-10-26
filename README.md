@@ -1,5 +1,3 @@
-# LLM Application
-
 ## Overview
 
 This tool is designed for interacting with OpenAi LLMs through a terminal interface. It allows you to
