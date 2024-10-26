@@ -11,6 +11,7 @@ cargo install hto
 
 ## Configuration
 
+- export `OPEN_API_KEY` in your terminal profile.
 - Create a configuration file in `~/.config/hto/config.yaml` The file format should be YAML.
 - Example `config.yaml`:
 
