@@ -1,5 +1,5 @@
 [package]
-name = "h2o"
+name = "hto"
 version = "0.1.0"
 edition = "2021"
 include = [

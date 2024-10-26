@@ -426,23 +426,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "h2o"
-version = "0.1.0"
-dependencies = [
- "atty",
- "clap",
- "dirs",
- "env_logger",
- "indicatif",
- "log",
- "reqwest",
- "serde",
- "serde_json",
- "serde_yml",
- "tokio",
-]
-
-[[package]]
 name = "hashbrown"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -468,6 +451,23 @@ name = "hermit-abi"
 version = "0.3.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d231dfb89cfffdbc30e7fc41579ed6066ad03abda9e567ccafae602b97ec5024"
+
+[[package]]
+name = "hto"
+version = "0.1.0"
+dependencies = [
+ "atty",
+ "clap",
+ "dirs",
+ "env_logger",
+ "indicatif",
+ "log",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "serde_yml",
+ "tokio",
+]
 
 [[package]]
 name = "http"
