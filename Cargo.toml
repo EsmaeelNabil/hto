@@ -2,6 +2,23 @@
 name = "h2o"
 version = "0.1.0"
 edition = "2021"
+include = [
+    "src/**/*",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE",
+]
+
+homepage = "https://github.com/EsmaeelNabil/h2o"
+description = "A CLI Tool to have one shot chat with openAi models in your terminal"
+keywords = [
+    "openai",
+    "ai",
+    "cli",
+    "gpt4"
+]
+categories = ["command-line-utilities"]
+license = "MIT"
 
 [dependencies]
 clap = { version = "4.5.20", features = ["derive"] }
