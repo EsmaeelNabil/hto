@@ -69,30 +69,6 @@ jobs:
           tag_prefix: "v"
           custom_tag: ${{ steps.crate-version.outputs.version }}
 
-      - name: docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ghcr.io/EsmaeelNabil/h2o
-          tags: |
-            type=semver,pattern={{version}}
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha
-            type=raw,prefix=v,value=${{ steps.crate-version.outputs.version }}
-
-      - name: build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/EsmaeelNabil/h2o:buildcache
-          cache-to: type=registry,ref=ghcr.io/EsmaeelNabil/h2o:buildcache,mode=max
-
       - uses: taiki-e/create-gh-release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
