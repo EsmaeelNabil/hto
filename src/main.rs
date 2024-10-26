@@ -2,8 +2,8 @@ mod openapi;
 mod config;
 mod cli;
 
-use crate::cli::get_query;
-use crate::config::get_config;
+use cli::get_query;
+use config::get_config;
 use clap::Parser;
 use cli::H2oArgs;
 use std::env;
