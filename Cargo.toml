@@ -1,0 +1,24 @@
+[package]
+name = "hto"
+version = "0.1.4"
+edition = "2021"
+include = ["src/**/*", "Cargo.toml", "README.md", "LICENSE"]
+
+homepage = "https://github.com/EsmaeelNabil/h2o"
+description = "A CLI Tool to have one shot chat with openAi models in your terminal"
+keywords = ["openai", "ai", "cli", "gpt4"]
+categories = ["command-line-utilities"]
+license = "MIT"
+
+[dependencies]
+clap = { version = "4.5.20", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_yml = "0.0.12"
+serde_json = "1.0.132"
+tokio = { version = "1.41.0", features = ["full"] }
+indicatif = "0.17.8"
+log = "0.4.22"
+env_logger = "0.11.5"
+reqwest = { version = "0.12.8", features = ["json", "rustls-tls"] }
+dirs = "5.0.1"
+atty = "0.2.14"
