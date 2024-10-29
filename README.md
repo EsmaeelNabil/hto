@@ -1,18 +1,18 @@
-# SAM (Simple AI Manager)
+# hto (Simple AI Manager)
 
 A powerful CLI tool designed to enhance your daily software engineering workflow by leveraging AI assistance for common
 development tasks.
 
 ## Overview
 
-SAM streamlines various software development workflows by providing intelligent assistance for tasks like commit message
+hto streamlines various software development workflows by providing intelligent assistance for tasks like commit message
 generation, code review, technical discussions, email management, and more.
 
 ## Install
 
 ```bash
-# Install SAM
-cargo install sam
+# Install hto
+cargo install hto
 ```
 
 Optionally install `gmail-cli` for email support from https://github.com/EsmaeelNabil/gmail-cli:
@@ -24,13 +24,13 @@ Optionally install `gmail-cli` for email support from https://github.com/Esmaeel
 export OPEN_API_KEY="your-key-here"
 
 # Create default config
-mkdir -p ~/.config/sam
-touch ~/.config/sam/config.yaml
+mkdir -p ~/.config/hto
+touch ~/.config/hto/config.yaml
 ```
 
 ## Configuration
 
-Create `~/.config/sam/config.yaml` with your preferred profiles:
+Create `~/.config/hto/config.yaml` with your preferred profiles:
 
 ```yaml
 apps:
@@ -66,55 +66,55 @@ apps:
 
 ```bash
 # Summarize latest emails
-echo "summarize these emails concisely $(gmail -m 5)" | sam
+echo "summarize these emails concisely $(gmail -m 5)" | hto
 
 # or if you have made a specific app for this in the config.yml 
-gmail -m 10 | sam --app "mail"   
+gmail -m 10 | hto --app "mail"   
 
 # Create focused summaries
-echo "extract only work-related emails and their action items $(gmail -m 10)" | sam
+echo "extract only work-related emails and their action items $(gmail -m 10)" | hto
 
 # Weekly digest
-echo "create a weekly summary grouped by project $(gmail -m 50)" | sam
+echo "create a weekly summary grouped by project $(gmail -m 50)" | hto
 
 # Find important meetings
-echo "list all upcoming meetings and their details $(gmail -m 20)" | sam
+echo "list all upcoming meetings and their details $(gmail -m 20)" | hto
 ```
 
 ### 2. Git Workflow Enhancement
 
 ```bash
 # Generate commit messages
-echo "write a commit message for these changes $(git diff)" | sam --app "commit"
+echo "write a commit message for these changes $(git diff)" | hto --app "commit"
 
 # Summarize recent work
-echo "summarize these recent changes $(git log --oneline -n 20)" | sam
+echo "summarize these recent changes $(git log --oneline -n 20)" | hto
 
 # PR description
-echo "create a pull request description for $(git diff main...feature-branch)" | sam --app "pr"
+echo "create a pull request description for $(git diff main...feature-branch)" | hto --app "pr"
 ```
 
 ### 3. Terminal Command Help
 
 ```bash
 # Get command explanations
-echo "explain this command: find . -type f -size +100M" | sam
+echo "explain this command: find . -type f -size +100M" | hto
 
 # Complex command help
-echo "explain this awk command: $(echo "awk '{sum+=\$1} END {print sum}'")" | sam
+echo "explain this awk command: $(echo "awk '{sum+=\$1} END {print sum}'")" | hto
 ```
 
 ### 4. Code Analysis
 
 ```bash
 # Code review
-echo "review this code: $(git diff)" | sam --app "software_engineer"
+echo "review this code: $(git diff)" | hto --app "software_engineer"
 
 # Security check
-echo "check for security issues: $(git diff)" | sam --app "software_engineer"
+echo "check for security issues: $(git diff)" | hto --app "software_engineer"
 
 # Generate tests
-echo "suggest unit tests for: $(cat src/user_service.rs)" | sam --app "software_engineer"
+echo "suggest unit tests for: $(cat src/user_service.rs)" | hto --app "software_engineer"
 ```
 
 ## Shell Aliases and Functions
@@ -124,26 +124,26 @@ Add these to your `.bashrc` or `.zshrc` for quick access:
 ```bash
 # Email workflows
 function email_summary() {
-    gmail -m 5 | sam --app "mail"
+    gmail -m 5 | hto --app "mail"
 }
 
 function work_emails() {
-    echo "extract work-related emails and action items $(gmail -m 10)" | sam
+    echo "extract work-related emails and action items $(gmail -m 10)" | hto
 }
 
 # Git workflows
 function smart_commit() {
-    git diff | sam --app "commit"
+    git diff | hto --app "commit"
 }
 
 function pr_desc() {
-     echo "$(git diff main)" | sam --app "pr"  echo "$(git diff main)" | sam --app "pr" 
+     echo "$(git diff main)" | hto --app "pr"  echo "$(git diff main)" | hto --app "pr" 
 }
 
 # Daily digest
 function morning_update() {
-    echo "summarize these emails focusing on urgent matters $(gmail -m 10)" | sam
-    echo "summarize recent repo activity $(git log --oneline -n 10)" | sam
+    echo "summarize these emails focusing on urgent matters $(gmail -m 10)" | hto
+    echo "summarize recent repo activity $(git log --oneline -n 10)" | hto
 }
 ```
 
@@ -152,19 +152,19 @@ function morning_update() {
 1. Use command substitution effectively:
    ```bash
    # Combine multiple sources
-   echo "summarize this context: $(git diff) and these emails $(gmail -m 5)" | sam
+   echo "summarize this context: $(git diff) and these emails $(gmail -m 5)" | hto
    ```
 
 2. Pipeline when needed:
    ```bash
    # Process and filter
-   gmail -m 20 | grep "URGENT" | sam --app "mail"
+   gmail -m 20 | grep "URGENT" | hto --app "mail"
    ```
 
 3. Save common queries, and maybe create a specified app with systemMessage for improved context and replies:
    ```bash
    # Create focused aliases
-   alias daily=echo "create a daily summary for my emails $(gmail -m 5) and the new changes in the repo$(git log --oneline -n 5)" | sam
+   alias daily=echo "create a daily summary for my emails $(gmail -m 5) and the new changes in the repo$(git log --oneline -n 5)" | hto
    ```
 
 ## Contributing
@@ -177,4 +177,4 @@ MIT
 
 ---
 
-Built with ❤️ by Sam/Esmaeel
+Built with ❤️ by hto/Esmaeel

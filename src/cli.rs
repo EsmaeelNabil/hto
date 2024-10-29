@@ -12,7 +12,7 @@ pub struct H2oArgs {
     #[arg(index = 1, default_value = DEFAULT_QUERY)]
     pub query: String,
 
-    /// App to use from the config file at ~/.config/sam/config.yaml
+    /// App to use from the config file at ~/.config/hto/config.yaml
     #[arg(short, long, default_value = "one_shot")]
     pub app: String,
 
@@ -20,8 +20,8 @@ pub struct H2oArgs {
     #[arg(short, long, default_value = "gpt-4o-mini")]
     pub model: String,
 
-    /// Config file to use, default is ~/.config/sam/config.yaml
-    #[arg(short, long, default_value = ".config/sam/config.yaml")]
+    /// Config file to use, default is ~/.config/hto/config.yaml
+    #[arg(short, long, default_value = ".config/hto/config.yaml")]
     pub config: String,
 
     /// Enable debug mode for more verbose output
