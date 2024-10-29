@@ -1,4 +1,4 @@
-# hto (Simple AI Manager)
+# hto (H2o)
 
 A powerful CLI tool designed to enhance your daily software engineering workflow by leveraging AI assistance for common
 development tasks.
