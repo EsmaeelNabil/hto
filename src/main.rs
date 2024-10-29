@@ -55,8 +55,10 @@ async fn main() {
             }
         }
         None => {
-            eprintln!("App: {} not found", args_app);
-            eprintln!("Add it to config.yaml file at ~/.config/hto/config.yaml and try again.");
+            eprintln!(
+                "App: {} not found, make sure ~/.config/hto/config.yaml exists, and has this app",
+                args_app
+            );
             std::process::exit(1);
         }
     }
