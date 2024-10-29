@@ -1,22 +1,12 @@
 [package]
 name = "hto"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
-include = [
-    "src/**/*",
-    "Cargo.toml",
-    "README.md",
-    "LICENSE",
-]
+include = ["src/**/*", "Cargo.toml", "README.md", "LICENSE"]
 
 homepage = "https://github.com/EsmaeelNabil/h2o"
 description = "A CLI Tool to have one shot chat with openAi models in your terminal"
-keywords = [
-    "openai",
-    "ai",
-    "cli",
-    "gpt4"
-]
+keywords = ["openai", "ai", "cli", "gpt4"]
 categories = ["command-line-utilities"]
 license = "MIT"
 
@@ -32,3 +22,4 @@ env_logger = "0.11.5"
 reqwest = { version = "0.12.8", features = ["json", "rustls-tls"] }
 dirs = "5.0.1"
 atty = "0.2.14"
+
