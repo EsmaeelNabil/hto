@@ -25,29 +25,39 @@ async fn main() {
 
     let config = config::get_config(&args);
 
-    // application configuration
-    let app = config.apps.get(args_app).unwrap();
-    let response_mode = app.responseMode.as_str();
-    let model = app.defaultModel.as_str();
+    // get application from config yaml file.
+    let app = config.apps.get(args_app);
 
-    match openapi::get_api_response(
-        query.as_str(),
-        model,
-        app.systemMessage.as_str(),
-        response_mode,
-        api_key.as_str(),
-        args.debug,
-    )
-    .await
-    {
-        Ok(response) => {
-            if let Some(actual_string) = response.as_str() {
-                println!("{}", actual_string);
-            } else {
-                // or handle differently for function calling in case of json
-                println!("{}", response);
+    match app {
+        Some(app) => {
+            let response_mode = app.responseMode.as_str();
+            let model = app.defaultModel.as_str();
+
+            match openapi::get_api_response(
+                query.as_str(),
+                model,
+                app.systemMessage.as_str(),
+                response_mode,
+                api_key.as_str(),
+                args.debug,
+            )
+            .await
+            {
+                Ok(response) => {
+                    if let Some(actual_string) = response.as_str() {
+                        println!("{}", actual_string);
+                    } else {
+                        // or handle differently for function calling in case of json
+                        println!("{}", response);
+                    }
+                }
+                Err(err) => eprintln!("Something wrong happened!: {}", err),
             }
         }
-        Err(err) => eprintln!("Something wrong happened!: {}", err),
+        None => {
+            eprintln!("App: {} not found", args_app);
+            eprintln!("Add it to config.yaml file at ~/.config/hto/config.yaml and try again.");
+            std::process::exit(1);
+        }
     }
 }
