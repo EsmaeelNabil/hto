@@ -174,7 +174,3 @@ Contributions are welcome! Check out our [Contributing Guidelines](CONTRIBUTING.
 ## License
 
 MIT
-
----
-
-Built with ❤️ by hto/Esmaeel
