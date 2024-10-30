@@ -15,7 +15,7 @@ generation, code review, technical discussions, email management, and more.
 cargo install hto
 ```
 
-Optionally install `gmail-cli` for email support from https://github.com/EsmaeelNabil/gmail-cli:
+And optionally install `gmail-cli` for email support from https://github.com/EsmaeelNabil/gmail-cli:
 
 ## Quick Start
 
