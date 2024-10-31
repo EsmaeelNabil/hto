@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on new tags that start with 'v'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v2
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Build the project
+        run: cargo build --release
+
+      - name: Prepare artifacts
+        if: matrix.os == 'windows-latest'
+        run: |
+          mkdir output
+          copy target\release\hto.exe output\
+          tar -czvf hto-${{ matrix.os }}.tar.gz -C output hto.exe
+        shell: cmd
+
+      - name: Prepare artifacts
+        if: matrix.os != 'windows-latest'
+        run: |
+          mkdir -p output
+          cp target/release/hto output/
+          tar -czvf hto-${{ matrix.os }}.tar.gz -C output hto
+        shell: bash
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: hto-${{ matrix.os }}
+          path: hto-${{ matrix.os }}.tar.gz
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Ubuntu artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: hto-ubuntu-latest
+          path: artifacts
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: hto-macos-latest
+          path: artifacts
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: hto-windows-latest
+          path: artifacts
+
+      - name: Create or Update Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          overwrite: true  # Overwrite if release already exists
+          files: |
+            artifacts/hto-ubuntu-latest.tar.gz#hto-linux.tar.gz
+            artifacts/hto-macos-latest.tar.gz#hto-macos.tar.gz
+            artifacts/hto-windows-latest.tar.gz#hto-windows.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
