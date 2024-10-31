@@ -64,3 +64,59 @@ pub fn get_config(args: &H2oArgs) -> H2oConfig {
         H2oConfig::default()
     }
 }
+
+mod tests {
+    use crate::cli::H2oArgs;
+    use crate::cli::DEFAULT_QUERY;
+    use crate::config::get_config;
+    use std::fs::File;
+    use std::io::Write;
+    #[test]
+    fn test_default_config() {
+        let args = H2oArgs {
+            query: String::from(DEFAULT_QUERY),
+            app: String::from("one_shot"),
+            model: String::from("gpt-4o-mini"),
+            config: String::from(".config/hto/config.yaml"),
+            debug: false,
+        };
+        let config = get_config(&args);
+        assert!(config.apps.contains_key("one_shot"));
+    }
+
+    #[test]
+    fn test_custom_config_loading() {
+        let config_path = "/tmp/test_config.yaml";
+        let mut file = File::create(config_path).unwrap();
+        writeln!(
+            file,
+            "apps:\n  custom_app:\n    defaultModel: \"gpt-3.5\"\n    responseMode: \"text\" \n    systemMessage: \"You are an extremely helpful assistant that is designed to be used inside the terminal, reply with this and nothing more: please provide a --query 'your query'\""
+        )
+            .unwrap();
+
+        let args = H2oArgs {
+            query: String::from(DEFAULT_QUERY),
+            app: String::from("one_shot"),
+            model: String::from("gpt-4o-mini"),
+            config: config_path.to_string(),
+            debug: false,
+        };
+
+        let config = get_config(&args);
+        assert!(config.apps.contains_key("custom_app"));
+        std::fs::remove_file(config_path).unwrap();
+    }
+
+    #[test]
+    fn test_missing_config_file() {
+        let args = H2oArgs {
+            query: String::from(DEFAULT_QUERY),
+            app: String::from("one_shot"),
+            model: String::from("gpt-4o-mini"),
+            config: String::from("/nonexistent/path.yaml"),
+            debug: false,
+        };
+        let config = get_config(&args);
+        assert!(config.apps.contains_key("one_shot"));
+    }
+}

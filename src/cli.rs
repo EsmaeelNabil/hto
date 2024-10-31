@@ -45,3 +45,39 @@ pub fn read_from_stdin() -> String {
         .expect("Failed to read from stdin");
     buffer
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use clap::Parser;
+
+    #[test]
+    fn test_default_query() {
+        let args = H2oArgs::parse_from(&["hto"]);
+        assert_eq!(args.query, DEFAULT_QUERY);
+    }
+
+    #[test]
+    fn test_custom_app_argument() {
+        let args = H2oArgs::parse_from(&["hto", "--app", "software_engineer"]);
+        assert_eq!(args.app, "software_engineer");
+    }
+
+    #[test]
+    fn test_model_argument() {
+        let args = H2oArgs::parse_from(&["hto", "--model", "gpt-3.5"]);
+        assert_eq!(args.model, "gpt-3.5");
+    }
+
+    #[test]
+    fn test_invalid_argument() {
+        let result = H2oArgs::try_parse_from(&["hto", "--unknown", "value"]);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_debug_mode() {
+        let args = H2oArgs::parse_from(&["hto", "-d"]);
+        assert!(args.debug);
+    }
+}
